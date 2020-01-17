@@ -1,0 +1,40 @@
+﻿using SamuraiApp.Data;
+using SamuraiApp.Domain;
+using System;
+using System.Linq;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        private static SamuraiContext context;
+
+        private static void Main(string[] args)
+        {
+            context = new SamuraiContext();
+            context.Database.EnsureCreated();
+            GetSamurais("Before Add:");
+            AddSamurai();
+            GetSamurais("After Add:");
+            Console.Write("Press any key...");
+            Console.ReadKey();
+        }
+
+        private static void AddSamurai()
+        {
+            var samurai = new Samurai { Name = "hamza" };
+            context.Samurais.Add(samurai);
+            context.SaveChanges();
+        }
+
+        private static void GetSamurais(string text)
+        {
+            var samurais = context.Samurais.ToList();
+            Console.WriteLine($"{text}: Samurai count is {samurais.Count}");
+            foreach (var samurai in samurais)
+            {
+                Console.WriteLine(samurai.Name);
+            }
+        }
+    }
+}
